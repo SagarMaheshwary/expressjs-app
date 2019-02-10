@@ -5,6 +5,6 @@
  * @param req
  * @param res
  */
-exports.index = (req,res) => {
+exports.index = (req, res) => {
 	res.render('home/index')
 }

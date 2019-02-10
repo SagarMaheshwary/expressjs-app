@@ -1,0 +1,84 @@
+<% include ../inc/header %>
+	<div class="d-flex justify-content-center my-5">
+	    <div class="col-md-6 col-lg-4">
+	        <div class="card border-success shadow">
+	        	<div class="card-body">
+		            <h1 class="text-center mb-3">Register</h1>
+		            <form action="/register" method="POST">
+		                <div class="form-group">
+		                    <label for="name">Name</label>
+		                    <input 
+		                    	type="name" 
+		                    	id="name" 
+		                    	name="name" 
+		                    	class="form-control <%= errors.find(error => error.param == 'name') ? 'is-invalid' : '' %>"
+		                    	placeholder="Enter Name" 
+		                    	value="<%= typeof name != 'undefined' ? name : '' %>"
+		                    >
+		                    <% for(let i in errors){ %>
+				                <% if(errors[i].param == 'name'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= errors[i].msg %>
+				                    </div>
+				                <% break} %>
+				            <% } %>
+		                </div>
+		                <div class="form-group">
+		                    <label for="email">Email</label>
+		                    <input 
+		                    	type="email" 
+		                    	id="email" 
+		                    	name="email" 
+		                    	class="form-control <%= errors.find(error => error.param == 'email') ? 'is-invalid' : '' %>"
+		                    	placeholder="Enter Email" 
+		                    	value="<%= typeof email != 'undefined' ? email : '' %>"
+		                    />
+		                    <% for(let i in errors){ %>
+				                <% if(errors[i].param == 'email'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= errors[i].msg %>
+				                    </div>
+				                <% break} %>
+				            <% } %>
+		                </div>
+		                <div class="form-group">
+		                    <label for="password">Password</label>
+		                    <input 
+		                    	type="password" 
+		                    	id="password" 
+		                    	name="password" 
+		                    	class="form-control <%= errors.find(error => error.param == 'password') ? 'is-invalid' : '' %>"
+		                    	placeholder="Enter Password" 
+		                    />
+		                    <% for(let i in errors){ %>
+				                <% if(errors[i].param == 'password'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= errors[i].msg %>
+				                    </div>
+				                <% break} %>
+				            <% } %>
+		                </div>
+		                <div class="form-group">
+		                    <label for="confirm_password">Confirm Password</label>
+		                    <input 
+		                    	type="password" 
+		                    	id="confirm_password" 
+		                    	name="confirm_password" 
+		                    	class="form-control <%= errors.find(error => error.param == 'confirm_password') ? 'is-invalid' : '' %>"
+		                    	placeholder="Confirm Password" 
+		                    />
+		                    <% errors.forEach(error => { %>
+				                <% if(error.param == 'confirm_password'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= error.msg %>
+				                    </div>
+				                <% } %>
+				            <% }) %>
+		                </div>
+		                <button type="submit" class="btn btn-success btn-block mb-3">Register</button>
+		            </form>
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+<% include ../inc/footer %>

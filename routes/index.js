@@ -5,7 +5,8 @@ const express = require('express')
  * Controllers
  */
 const HomeController = require('../controllers/HomeController')
-	, ArticlesController = require('../controllers/ArticlesController');
+	, ArticlesController = require('../controllers/ArticlesController')
+	, AuthController = require('../controllers/AuthController');
 
 /**
  * Validation methods.
@@ -18,52 +19,76 @@ const Validator = require('../validation/index');
 
 //Show home page.
 router.get(
-		'/' ,
-		HomeController.index
-	);
+	'/',
+	HomeController.index
+);
 
 //Display all articles.
 router.get(
-		'/articles' ,
-		ArticlesController.index
-	);
+	'/articles',
+	ArticlesController.index
+);
 
 //Create article form.
 router.get(
-		'/articles/create' ,
-		ArticlesController.create
-	);
+	'/articles/create',
+	ArticlesController.create
+);
 
 //Store article.
 router.post(
-		'/articles' ,
-		Validator.validateArticle ,
-		ArticlesController.store
-	);
+	'/articles',
+	Validator.validateArticle,
+	ArticlesController.store
+);
 
 //Show a specified article.
 router.get(
-		'/articles/:id' ,
-		ArticlesController.show
-	);
+	'/articles/:id',
+	ArticlesController.show
+);
 
 //Edit article form.
 router.get(
-		'/articles/:id/edit' ,
-		ArticlesController.edit
-	);
+	'/articles/:id/edit',
+	ArticlesController.edit
+);
 
 //Update specified article.
 router.put(
-		'/articles/:id' ,
-		Validator.validateArticle ,
-		ArticlesController.update
-	);
+	'/articles/:id',
+	Validator.validateArticle,
+	ArticlesController.update
+);
 
 //Delete specified article.
 router.delete(
-		'/articles/:id',
-		ArticlesController.destroy
-	);
+	'/articles/:id',
+	ArticlesController.destroy
+);
+
+//show register form
+router.get(
+	'/register',
+	AuthController.showRegisterForm
+);
+
+//register the user
+router.post(
+	'/register',
+	Validator.validateRegisterForm,
+	AuthController.register
+);
+
+router.get(
+	'/login',
+	AuthController.showLoginForm
+);
+
+router.post(
+	'/login',
+	Validator.validateLoginForm,
+	AuthController.login
+);
 
 module.exports = router;

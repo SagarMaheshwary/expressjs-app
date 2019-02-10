@@ -1,0 +1,52 @@
+<% include ../inc/header %>
+	<div class="d-flex justify-content-center my-5">
+	    <div class="col-md-6 col-lg-4 m-auto">
+	        <div class="card border-info shadow">
+	        	<div class="card-body">
+		            <h1 class="text-center mb-3">Login</h1>
+		            <form action="/login" method="POST">
+		                <div class="form-group">
+		                    <label for="email">Email</label>
+		                    <input 
+		                    	type="email" 
+		                    	id="email" 
+		                    	name="email" 
+		                    	class="form-control <%= errors.find(error => error.param == 'email') ? 'is-invalid' : '' %>"
+		                    	placeholder="Enter Email" 
+		                    	value="<%= typeof email != 'undefined' ? email : '' %>"
+		                    />
+		                    <% for(let i in errors){ %>
+				                <% if(errors[i].param == 'email'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= errors[i].msg %>
+				                    </div>
+				                <% break} %>
+				            <% } %>
+		                </div>
+		                <div class="form-group">
+		                    <label for="password">Password</label>
+		                    <input 
+		                    	type="password" 
+		                    	id="password" 
+		                    	name="password" 
+		                    	class="form-control <%= errors.find(error => error.param == 'password') ? 'is-invalid' : '' %>"
+		                    	placeholder="Enter Password" 
+		                    />
+		                    <% for(let i in errors){ %>
+				                <% if(errors[i].param == 'password'){ %>
+				                    <div class="invalid-feedback">
+				                        <%= errors[i].msg %>
+				                    </div>
+				                <% break} %>
+				            <% } %>
+		                </div>
+		                <button type="submit" class="btn btn-info btn-block">Login</button>
+		            </form>
+		            <p class="lead mt-4">
+		                No Account? <a href="/register" class="text-info">Register</a>
+		            </p>
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+<% include ../inc/footer %>

@@ -16,3 +16,4 @@
 - Create, Read, Update, and Delete Articles.
 - Validation.
 - Flash Messages.
+- User registration.
