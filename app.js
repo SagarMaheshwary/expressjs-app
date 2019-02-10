@@ -2,6 +2,7 @@ const express = require('express')
 	, bodyParser = require('body-parser')
 	, path = require('path')
 	, mongoose = require('mongoose')
+	, methodOverride = require('method-override')
 	, session = require('express-session')
 	, flash = require('connect-flash');
 
@@ -16,6 +17,9 @@ app.use(express.static(path.join(__dirname,'./public')));
 //set the view engine to ejs
 app.set('view engine', 'ejs');
 app.set('views',path.join(__dirname,'./views'));
+
+//method override using query value for PUT and DELETE.
+app.use(methodOverride('_method'));
 
 //setup session
 app.use(session({

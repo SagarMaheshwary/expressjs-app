@@ -62,7 +62,7 @@ router.put(
 
 //Delete specified article.
 router.delete(
-		'/articles/id',
+		'/articles/:id',
 		ArticlesController.destroy
 	);
 

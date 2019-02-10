@@ -1,0 +1,43 @@
+<% include ../inc/header %>
+<div class="container my-5">
+    <form action="/articles/<%= article._id%>?_method=PUT" method="post">
+        <h3 class="text-center">Update Article</h3>
+        <div class="form-group">
+            <label for="title" class="form-label">Article Title</label>
+            <input 
+                type="text"
+                id="title"
+                name="title"
+                class="form-control <%= errors.find(error => error.param == 'title') ? 'is-invalid' : '' %>"
+                value="<%= typeof title != 'undefined' && title ? title : article.title %>"
+                placeholder="Enter article title"
+            >
+            <% for(let i in errors){ %>
+                <% if(errors[i].param == 'title'){ %>
+                    <div class="invalid-feedback">
+                        <%= errors[i].msg %>
+                    </div>
+                <% break} // just print one error %>
+            <% } %>
+        </div>
+        <div class="form-group">
+            <label for="body">Article Body</label>
+            <textarea 
+                name="body"
+                placeholder="Enter Article Body"
+                class="form-control <%= errors.find(error => error.param == 'body') ? 'is-invalid' : '' %>""
+                id="body" 
+                rows="6"
+            ><%= typeof body != 'undefined' && body ? body : article.body %></textarea>
+            <% for(let i in errors){ %>
+                <% if(errors[i].param == 'body'){ %>
+                    <div class="invalid-feedback">
+                        <%= errors[i].msg %>
+                    </div>
+                <% break} // just print one error %>
+            <% } %>
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary">Update Article</button>
+    </form>
+</div>
+<% include ../inc/footer %>

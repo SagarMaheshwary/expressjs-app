@@ -13,5 +13,5 @@
 ```
 
 ## features
-- Create and Read Articles.
+- Create, Read, Update, and Delete Articles.
 - Validation.

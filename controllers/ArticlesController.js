@@ -35,7 +35,7 @@ const Article = require('../models/Article')
 					articles: results,
 					pageCount,
 					currentPage: req.query.page || 1,
-					moment
+					moment //momentjs for displaying date in a human readable format
 				});
 		}catch(err){
 			console.log(err)
@@ -62,7 +62,7 @@ const Article = require('../models/Article')
 	 * @param req
 	 * @param res
 	 */
-	exports.store = (req,res) => {
+	exports.store = async (req,res) => {
 		try{
 			//if validation fails then get all the errors.
 			const errors = validationResult(req);
@@ -80,11 +80,11 @@ const Article = require('../models/Article')
 			//create a new Article object
 			const article = new Article({
 				title: req.body.title,
-				body: req.body.body,
+				body: req.body.body
 			});
 
 			//save it to the database.
-			article.save()
+			await article.save()
 				.then(article => {
 					res.redirect('/articles');
 				})
@@ -121,7 +121,17 @@ const Article = require('../models/Article')
 	 * @param res
 	 */
 	exports.edit = async (req,res) => {
-		//edit form
+		try{
+			// get the specified article by _id field.
+			const article = await Article.findById(req.params.id);
+
+			res.render('articles/edit' ,{
+					article: article,
+					errors: [] // validation errors array.
+				});
+		}catch(err){
+			console.log(err)
+		}
 	}
 
 	/**
@@ -130,13 +140,44 @@ const Article = require('../models/Article')
 	 * @param req
 	 * @param res
 	 */
-	exports.update = (req,res) => {
-		//update article
+	exports.update = async (req,res) => {
+		try{
+			//if validation fails then get all the errors.
+			const errors = validationResult(req);
+			
+			if(!errors.isEmpty()){
+				//return back to the view with validation errors
+				// and form data.
+				return res.render('articles/edit' ,{
+					errors: errors.array(),
+					title: req.body.title,
+					body: req.body.body
+				});
+			}
+
+			// get the specific article.
+			const article = await Article.findById(req.params.id);
+			article.title = req.body.title;
+			article.body = req.body.body;
+			article.updated_at = Date.now();
+
+			//save the updated article to the database
+			await article.save()
+				.then(article => {
+					res.redirect(`/articles/${article._id}`)
+				})
+				.catch(err => console.log(err));
+		}catch(err) {
+			console.log(err)
+		}
 	}
 
 	/**
 	 * Delete a specified article from the database
 	 */
-	exports.destroy = (req,res) => {
-		//delete article
+	exports.destroy = async (req,res) => {
+		await Article.deleteOne({_id: req.params.id}, (err) => {
+			if(err) return err; // unable to delete the article
+			res.redirect('/articles');
+		})
 	}
