@@ -1,5 +1,5 @@
 # Expressjs App
-- A basic expressjs/mongodb application with crud operations and authentication.
+- A basic expressjs/mongodb articles app with crud operations and authentication.
 
 # Run this app locally
 - Clone this repo or download the zip from the above **Clone or download zip** button.
@@ -13,3 +13,5 @@
 ```
 
 ## features
+- Create and Read Articles.
+- Validation.

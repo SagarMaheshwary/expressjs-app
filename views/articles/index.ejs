@@ -1,0 +1,42 @@
+<% include ../inc/header %>
+	<div class="container my-5">
+		<h1 class="text-center mb-4">All Articles</h1>
+		<div class="row">
+			<% articles.forEach(article => { %>
+				<div class="col-md-6">
+					<div class="card border-info my-2">
+						<div class="card-body">
+							<h3 class="text-center card-title">
+								<%= article.title %>
+							</h3>
+							<p class="card-text">
+								<%= article.body.substring(0,250) + "..." %>
+							</p>
+							<p class="float-right card-text">
+								Published <%= moment(article.created_at).fromNow() %>
+							</p>
+							<div class="clearfix"></div>
+							<a href="/articles/<%= article._id %>" class="card-link">Read more</a>
+							
+						</div>
+					</div>
+				</div>
+			<% }) %>
+		</div>
+		<div class="d-flex justify-content-center mt-4">
+		  	<ul class="pagination">
+			    <li class="page-item <%= currentPage <= 1 ? 'disabled' : '' %>">
+			      	<a class="page-link" href="/articles?page=<%= (currentPage - 1) %>">&laquo;</a>
+			    </li>
+			    <% for(let i = 1; i <= pageCount;i ++){ %>
+				    <li class="page-item <%= currentPage == i ? 'active' : '' %>">
+				        <a class="page-link" href="/articles?page=<%= i %>"><%= i %></a>
+				    </li>
+			    <% } %>
+			    <li class="page-item <%= currentPage >= pageCount ? 'disabled' : '' %>">
+			      <a class="page-link" href="/articles?page=<%= ++currentPage %>">&raquo;</a>
+			    </li>
+		  	</ul>
+		</div>
+	</div>
+<% include ../inc/footer %>

@@ -1,0 +1,10 @@
+<% include ../inc/header %>
+	<div class="container my-5">
+		<h1 class="text-center mb-4"><%= article.title %></h1>
+		<p><%= article.body %></p>
+		<p class="float-right">
+			Published <%= moment(article.created_at).fromNow() %>
+		</p>
+		<div class="clearfix"></div>
+	</div>
+<% include ../inc/footer %>
