@@ -7,6 +7,27 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <title>Articles app</title>
+    <style>
+        .alert{
+            z-index: 99;
+            top: 60px;
+            right:18px;
+            min-width:30%;
+            position: fixed;
+            animation: slide 0.5s forwards;
+        }
+
+        @keyframes slide {
+            100% { top: 30px; }
+        }
+
+        @media screen and (max-width: 668px) {
+            .alert{ /* center the alert on small screens */
+                left: 10px;
+                right: 10px; 
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -31,3 +52,5 @@
             </ul>
         </div>
     </nav>
+
+    <% include flash-message %>

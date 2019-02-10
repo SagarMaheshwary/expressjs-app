@@ -86,6 +86,7 @@ const Article = require('../models/Article')
 			//save it to the database.
 			await article.save()
 				.then(article => {
+					req.flash('success','Article created!');
 					res.redirect('/articles');
 				})
 				.catch(err => console.log(err))
@@ -145,18 +146,20 @@ const Article = require('../models/Article')
 			//if validation fails then get all the errors.
 			const errors = validationResult(req);
 			
+			// get the specific article.
+			const article = await Article.findById(req.params.id);
+			
 			if(!errors.isEmpty()){
 				//return back to the view with validation errors
 				// and form data.
 				return res.render('articles/edit' ,{
 					errors: errors.array(),
 					title: req.body.title,
-					body: req.body.body
+					body: req.body.body,
+					article: article
 				});
 			}
 
-			// get the specific article.
-			const article = await Article.findById(req.params.id);
 			article.title = req.body.title;
 			article.body = req.body.body;
 			article.updated_at = Date.now();
@@ -164,7 +167,8 @@ const Article = require('../models/Article')
 			//save the updated article to the database
 			await article.save()
 				.then(article => {
-					res.redirect(`/articles/${article._id}`)
+					req.flash('success','Article updated!');
+					res.redirect(`/articles/${article._id}`);
 				})
 				.catch(err => console.log(err));
 		}catch(err) {
@@ -178,6 +182,7 @@ const Article = require('../models/Article')
 	exports.destroy = async (req,res) => {
 		await Article.deleteOne({_id: req.params.id}, (err) => {
 			if(err) return err; // unable to delete the article
+			req.flash('success','Article deleted!')
 			res.redirect('/articles');
 		})
 	}

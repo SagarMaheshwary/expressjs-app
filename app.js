@@ -31,6 +31,13 @@ app.use(session({
 //for flash messages
 app.use(flash());
 
+//global variables
+app.use((req,res,next) => {
+	res.locals.success = req.flash('success');
+	res.locals.error = req.flash('error');
+	next();
+});
+
 //web routes
 app.use('/', require('./routes/index'));
 
