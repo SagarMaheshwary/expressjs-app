@@ -4,7 +4,8 @@ const express = require('express')
 	, mongoose = require('mongoose')
 	, methodOverride = require('method-override')
 	, session = require('express-session')
-	, flash = require('connect-flash');
+	, flash = require('connect-flash')
+	, passport = require('passport');
 
 const app = express();
 
@@ -25,16 +26,29 @@ app.use(methodOverride('_method'));
 app.use(session({
 	secret: 'secret',
 	resave: true,
-	saveUninitialized: true
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 3600000 // 1 hour
+	}
 }));
 
 //for flash messages
 app.use(flash());
 
+//passportjs session based authentication
+require('./config/passport').passportLocal();
+app.use(passport.initialize());
+app.use(passport.session());
+
 //global variables
 app.use((req,res,next) => {
 	res.locals.success = req.flash('success');
 	res.locals.error = req.flash('error');
+	
+	// NOTE: passportjs should be initialized before globals
+	// or else we won't be able to access
+	// auth user as global variable.
+	res.locals.user = req.user;
 	next();
 });
 

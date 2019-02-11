@@ -1,3 +1,3 @@
 module.exports = {
-	mongoURL: "mongodb://url:port/db-name"
+	mongoURL: "mongodb://host:port/db-name"
 }

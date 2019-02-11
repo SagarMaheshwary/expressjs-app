@@ -6,12 +6,18 @@ const express = require('express')
  */
 const HomeController = require('../controllers/HomeController')
 	, ArticlesController = require('../controllers/ArticlesController')
-	, AuthController = require('../controllers/AuthController');
+	, AuthController = require('../controllers/AuthController')
+	, DashboardController = require('../controllers/DashboardController');
 
 /**
  * Validation methods.
  */
 const Validator = require('../validation/index');
+
+/**
+ * Authentication Middleware.
+ */
+const Authenticate = require('../middleware/authenticate');
 
 /**
  * All Routes.
@@ -38,26 +44,26 @@ router.get(
 //Store article.
 router.post(
 	'/articles',
-	Validator.validateArticle,
+	Validator.validateArticle ,
 	ArticlesController.store
 );
 
 //Show a specified article.
 router.get(
-	'/articles/:id',
+	'/articles/:id' ,
 	ArticlesController.show
 );
 
 //Edit article form.
 router.get(
-	'/articles/:id/edit',
+	'/articles/:id/edit' ,
 	ArticlesController.edit
 );
 
 //Update specified article.
 router.put(
-	'/articles/:id',
-	Validator.validateArticle,
+	'/articles/:id' ,
+	Validator.validateArticle ,
 	ArticlesController.update
 );
 
@@ -67,28 +73,45 @@ router.delete(
 	ArticlesController.destroy
 );
 
-//show register form
+//show register form.
 router.get(
-	'/register',
+	'/register' ,
+	Authenticate.notAuthenticated ,
 	AuthController.showRegisterForm
 );
 
 //register the user
 router.post(
-	'/register',
-	Validator.validateRegisterForm,
+	'/register' ,
+	Validator.validateRegisterForm ,
 	AuthController.register
 );
 
+//show login form.
 router.get(
-	'/login',
+	'/login' ,
+	Authenticate.notAuthenticated ,
 	AuthController.showLoginForm
 );
 
+//Log the user in.
 router.post(
-	'/login',
-	Validator.validateLoginForm,
+	'/login' ,
+	Validator.validateLoginForm ,
 	AuthController.login
+);
+
+//Show dashboard view.
+router.get(
+	'/dashboard' ,
+	Authenticate.isAuthenticated ,
+	DashboardController.index
+);
+
+//Log the user out.
+router.get(
+	'/logout' ,
+	AuthController.logout
 );
 
 module.exports = router;

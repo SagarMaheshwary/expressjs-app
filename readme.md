@@ -3,17 +3,22 @@
 
 # Run this app locally
 - Clone this repo or download the zip from the above **Clone or download zip** button.
-- install the node modules
+
+- install the node modules.
 ```bash
 	npm install
 ```
-- Start the server with nodemon
+- Start the dev server with nodemon.
 ```bash
 	npm run dev
+```
+- Start the server with nodejs (for production).
+```bash
+	npm run prod
 ```
 
 ## features
 - Create, Read, Update, and Delete Articles.
 - Validation.
 - Flash Messages.
-- User registration.
+- User Registration and Login with Passportjs.

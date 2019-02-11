@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator/check')
 	, bcrypt = require('bcryptjs')
-	, User = require('../models/User');
+	, User = require('../models/User')
+	, passport = require('passport');
 
 /**
  * Show registration form
@@ -43,19 +44,22 @@ exports.register = async (req, res) => {
 		});
 
 		// create a password hash
-		bcrypt.genSalt(10, (err, hash) => {
-			if (err) throw err;
+		bcrypt.genSalt(10, ( err, salt) => {
+			bcrypt.hash( user.password,salt, ( err, hash) => {
+				if (err) throw err;
 
-			//set it to user object
-			user.password = hash;
+				//set it to user object
+				user.password = hash;
 
-			//save the user to the database
-			user.save()
-				.then(user => {
-					req.flash('success', 'You can now login!');
-					res.redirect('/login');
+				//save the user to the database
+				user.save()
+					.then(user => {
+						req.flash('success', 'You can now login!');
+						res.redirect('/login');
+					})
+					.catch(err => console.log(err));	
 				})
-				.catch(err => console.log(err));
+			
 		})
 	} catch (err) {
 		console.log(err)
@@ -80,8 +84,9 @@ exports.showLoginForm = (req, res) => {
  * 
  * @param req
  * @param res
+ * @param next
  */
-exports.login = (req, res) => {
+exports.login = ( req, res, next) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -91,5 +96,39 @@ exports.login = (req, res) => {
 		});
 	}
 
-	//login process..
+	// Authenticate with local strategy.
+	passport.authenticate('local', ( err, user, info) => {
+		
+		//custom login flow
+		if (err) return next(err);
+		
+		if (!user) { // invalid credentials
+			return res.render('auth/login',{
+				email: req.body.email,
+				errors: [],
+				error: 'Invalid Email and Password'
+			});
+		}
+		
+		req.logIn(user, (err) => {
+			if (err) return next(err); //login failed
+			
+			//login success
+			req.flash('success','You are Logged in!');
+			return res.redirect('/dashboard');	
+		});
+	})( req, res, next);
+
+}
+
+/**
+ * Log the user out.
+ * 
+ * @param req
+ * @param res
+ */
+exports.logout = ( req, res) => {
+	req.logout(); // logout
+	req.flash('success','Logout Successful!');
+	res.redirect('/login');
 }
